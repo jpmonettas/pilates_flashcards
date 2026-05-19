@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flashcards Pilates</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="flashcards_pilates_profesor.js"></script>
+  <script src="flashcards_preguntas_alumnos_pilates.js"></script>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>Flashcards Pilates</h1>
+      <p class="subtitle">Tocá la tarjeta para ver la respuesta.</p>
+    </header>
+
+    <section class="controls" aria-label="Controles de flashcards">
+      <div>
+        <label for="collection">Colección</label>
+        <select id="collection">
+          <option value="study">Estudio para profesor</option>
+          <option value="students">Preguntas de alumnos</option>
+        </select>
+      </div>
+      <button id="nextBtn" type="button">Siguiente</button>
+    </section>
+
+    <section class="card-stage">
+      <article class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Flashcard. Tocar para girar.">
+        <div class="face front">
+          <span class="pill" id="sectionText"></span>
+          <p class="question" id="questionText"></p>
+          <span class="hint">Tap / click para ver respuesta</span>
+        </div>
+        <div class="face back">
+          <span class="pill">Respuesta</span>
+          <p class="answer" id="answerText"></p>
+          <span class="hint">Tap / click para volver</span>
+        </div>
+      </article>
+    </section>
+
+    <div class="counter" id="counterText"></div>
+  </main>
+
+  <script>
+    
+    const collectionSelect = document.getElementById("collection");
+    const flashcard = document.getElementById("flashcard");
+    const sectionText = document.getElementById("sectionText");
+    const questionText = document.getElementById("questionText");
+    const answerText = document.getElementById("answerText");
+    const nextBtn = document.getElementById("nextBtn");
+    const counterText = document.getElementById("counterText");
+
+    let currentCollection = collectionSelect.value;
+    let currentIndex = -1;
+
+    function getCards() {
+      if (currentCollection == "students") {
+        return students;
+      } else if (currentCollection == "study") {
+        return study;
+      } else {
+        return [];
+      } 
+      return collections[currentCollection] || [];
+    }
+
+    function normalizeCard(card) {
+      return {
+        section: card.section || "Preguntas de alumnos",
+        question: card.question || "",
+        answer: card.answer || ""
+      };
+    }
+
+    function pickRandomCard() {
+      const cards = getCards();
+      if (!cards.length) return;
+
+      let nextIndex = Math.floor(Math.random() * cards.length);
+
+      if (cards.length > 1) {
+        while (nextIndex === currentIndex) {
+          nextIndex = Math.floor(Math.random() * cards.length);
+        }
+      }
+
+      currentIndex = nextIndex;
+      renderCard(normalizeCard(cards[currentIndex]));
+    }
+
+    function renderCard(card) {
+      flashcard.classList.remove("is-flipped");
+      sectionText.textContent = card.section;
+      questionText.textContent = card.question;
+      answerText.textContent = card.answer;
+
+      const total = getCards().length;
+      counterText.textContent = `${currentIndex + 1} / ${total}`;
+    }
+
+    function flipCard() {
+      flashcard.classList.toggle("is-flipped");
+    }
+
+    collectionSelect.addEventListener("change", () => {
+      currentCollection = collectionSelect.value;
+      currentIndex = -1;
+      pickRandomCard();
+    });
+
+    nextBtn.addEventListener("click", pickRandomCard);
+    flashcard.addEventListener("click", flipCard);
+
+    flashcard.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        flipCard();
+      }
+    });
+
+    pickRandomCard();
+  </script>
+</body>
+</html>

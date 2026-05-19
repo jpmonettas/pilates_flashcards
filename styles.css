@@ -1,0 +1,234 @@
+:root {
+    --bg-1: #f7efe7;
+    --bg-2: #e8d8c7;
+    --card-front: #fffaf5;
+    --card-back: #f4e7d8;
+    --text: #30251f;
+    --muted: #735f52;
+    --accent: #9a6b4f;
+    --accent-dark: #744d38;
+    --shadow: 0 24px 60px rgba(75, 46, 30, 0.22);
+    --radius: 28px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.85), transparent 34%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+}
+
+.app {
+    width: min(100%, 520px);
+    min-height: calc(100vh - 36px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+}
+
+header {
+    text-align: center;
+}
+
+h1 {
+    margin: 0 0 8px;
+    font-size: clamp(1.6rem, 6vw, 2.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+}
+
+.subtitle {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.98rem;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+label {
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+}
+
+select,
+button {
+    width: 100%;
+    border: 0;
+    border-radius: 999px;
+    padding: 14px 16px;
+    font: inherit;
+}
+
+select {
+    background: rgba(255,255,255,0.72);
+    color: var(--text);
+    box-shadow: inset 0 0 0 1px rgba(116,77,56,0.18);
+}
+
+button {
+    background: var(--accent);
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 12px 24px rgba(116, 77, 56, 0.24);
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+button:active {
+    transform: translateY(1px) scale(0.99);
+    background: var(--accent-dark);
+}
+
+.card-stage {
+    perspective: 1200px;
+    width: 100%;
+    height: min(58vh, 430px);
+    min-height: 360px;
+}
+
+.flashcard {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(.2,.8,.2,1);
+}
+
+.flashcard.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.face {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: clamp(22px, 6vw, 34px);
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.face::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border-radius: calc(var(--radius) - 10px);
+    border: 1px solid rgba(116,77,56,0.16);
+    pointer-events: none;
+}
+
+.front {
+    background: var(--card-front);
+}
+
+.back {
+    background: var(--card-back);
+    transform: rotateY(180deg);
+}
+
+.pill {
+    position: relative;
+    align-self: flex-start;
+    display: inline-flex;
+    max-width: 100%;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(154,107,79,0.12);
+    color: var(--accent-dark);
+    font-size: 0.8rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 22px;
+}
+
+.question,
+.answer {
+    position: relative;
+    margin: 0;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+}
+
+.question {
+    font-size: clamp(1.65rem, 7vw, 2.65rem);
+}
+
+.answer {
+    font-size: clamp(1.45rem, 6vw, 2.25rem);
+}
+
+.hint {
+    position: absolute;
+    left: 28px;
+    right: 28px;
+    bottom: 24px;
+    color: var(--muted);
+    font-size: 0.86rem;
+    text-align: center;
+    opacity: 0.72;
+}
+
+.counter {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+@media (min-width: 560px) {
+    .controls {
+        grid-template-columns: 1fr auto;
+        align-items: end;
+    }
+
+    button {
+        width: auto;
+        min-width: 150px;
+    }
+}
+
+@media (max-width: 380px) {
+    body {
+        padding: 12px;
+    }
+
+    .app {
+        min-height: calc(100vh - 24px);
+    }
+
+    .card-stage {
+        min-height: 330px;
+    }
+
+    .face {
+        padding: 20px;
+    }
+
+    .hint {
+        left: 18px;
+        right: 18px;
+    }
+}
