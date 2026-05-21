@@ -29,6 +29,9 @@ body {
     padding: 18px;
 }
 
+pre {
+    text-wrap: wrap;
+}
 .app {
     width: min(100%, 520px);
     min-height: calc(100vh - 36px);

@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css">
   <script src="flashcards_pilates_profesor.js"></script>
   <script src="flashcards_preguntas_alumnos_pilates.js"></script>
+  <script src="flashcards_34_mat_pilates.js"></script>
 </head>
 <body>
   <main class="app">
@@ -21,6 +22,7 @@
         <select id="collection">
           <option value="study">Estudio para profesor</option>
           <option value="students">Preguntas de alumnos</option>
+          <option value="mat_exercises">34 Ejercicios Mat</option>
         </select>
       </div>
       <button id="nextBtn" type="button">Siguiente</button>
@@ -30,12 +32,12 @@
       <article class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Flashcard. Tocar para girar.">
         <div class="face front">
           <span class="pill" id="sectionText"></span>
-          <p class="question" id="questionText"></p>
+          <pre class="question" id="questionText"></p>
           <span class="hint">Tap / click para ver respuesta</span>
         </div>
         <div class="face back">
           <span class="pill">Respuesta</span>
-          <p class="answer" id="answerText"></p>
+          <pre class="answer" id="answerText"></p>
           <span class="hint">Tap / click para volver</span>
         </div>
       </article>
@@ -62,6 +64,8 @@
         return students;
       } else if (currentCollection == "study") {
         return study;
+      } else if (currentCollection == "mat_exercises") {
+        return mat_exercises;
       } else {
         return [];
       } 
